@@ -17,13 +17,13 @@ import com.example.demo.models.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-public class UsersController {  
-    
+public class UsersController {
+
     @Autowired
     private UserRepository userRepo;
 
     @GetMapping("/users/view")
-    public String getAllUsers(Model model){
+    public String getAllUsers(Model model) {
         System.out.println("Getting all users");
         // get all users from database
         List<User> users = userRepo.findAll();
@@ -32,13 +32,18 @@ public class UsersController {
         return "users/showAll";
     }
 
+    @GetMapping("/users/add")
+    public String addUsers() {
+        return "users/add";
+    }
+
     @PostMapping("/users/add")
-    public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response){
+    public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response) {
         System.out.println("ADD user");
         String newName = newuser.get("name");
         String newPwd = newuser.get("password");
         int newSize = Integer.parseInt(newuser.get("size"));
-        userRepo.save(new User(newName,newPwd,newSize));
+        userRepo.save(new User(newName, newPwd, newSize));
         response.setStatus(201);
         return "users/addedUser";
     }
